@@ -1,6 +1,6 @@
 {
   "name": "vyasagraph",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Embedded knowledge graph + two-layer memory stack for AI agents. Long-term (VyasaGraph) + short-term (SESSION-STATE) memory in one package.",
   "type": "module",
   "main": "src/index.js",

@@ -5,6 +5,7 @@
 
 import { getDb } from './db.js';
 import { generateEmbedding } from './embeddings.js';
+import { regenerateEmbedding } from './regenerate.js';
 
 /**
  * Creates one or more entities.
@@ -66,7 +67,7 @@ export async function createEntities(entities) {
 }
 
 /**
- * Adds observations to existing entities.
+ * Adds observations to existing entities and automatically regenerates embeddings.
  * @param {Array<{entityName: string, contents: string[]}>} observations
  * @returns {Promise<{updated: number, errors: string[]}>}
  */
@@ -92,6 +93,8 @@ export async function addObservations(observations) {
 
       if (result && result.length > 0) {
         updated++;
+        // Always regenerate embedding so new observations are immediately searchable
+        await regenerateEmbedding(obs.entityName);
       } else {
         errors.push(`Entity "${obs.entityName}" not found`);
       }
@@ -190,6 +193,12 @@ export async function updateEntity(name, updates) {
     `UPDATE entity SET ${setClauses.join(', ')} WHERE name = $name`,
     params
   );
+
+  // Regenerate embedding if observations or metadata changed (affects searchability)
+  if (result && result.length > 0 &&
+      (updates.observations !== undefined || updates.metadata !== undefined)) {
+    await regenerateEmbedding(name);
+  }
 
   return (result && result.length > 0) ? result[0] : null;
 }
