@@ -27,9 +27,11 @@ export async function regenerateEmbedding(entityName) {
 
     const entity = entities[0];
 
-    // Generate new embedding from entity name + all observations
-    // Name is prepended to ensure vector search matches name queries
-    const text = `${entity.name}\n${entity.observations.join(' ')}`;
+    // Generate embedding. currentState takes priority when present — it's a dense
+    // summary that produces a sharper signal than averaging a full observation history.
+    const text = entity.currentState
+      ? `${entity.name}\n${entity.currentState}`
+      : `${entity.name}\n${entity.observations.join(' ')}`;
     const embedding = await generateEmbedding(text);
 
     if (!embedding) {

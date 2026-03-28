@@ -51,7 +51,7 @@ export async function init(dbPath, options = {}) {
   }
 
   await db.connect(connectionString);
-  await db.use({ namespace: 'agentmemory', database: 'graph' });
+  await db.use({ namespace: 'vyasa', database: 'memory' });
   await initSchema();
 
   initialized = true;
@@ -81,6 +81,7 @@ async function initSchema() {
     DEFINE FIELD IF NOT EXISTS name ON entity TYPE string;
     DEFINE FIELD IF NOT EXISTS entityType ON entity TYPE string DEFAULT 'unknown';
     DEFINE FIELD IF NOT EXISTS observations ON entity TYPE array DEFAULT [];
+    DEFINE FIELD IF NOT EXISTS currentState ON entity TYPE option<string>;
     DEFINE FIELD IF NOT EXISTS embedding ON entity TYPE option<array<float>>;
     DEFINE FIELD IF NOT EXISTS createdAt ON entity TYPE datetime DEFAULT time::now();
     DEFINE FIELD IF NOT EXISTS updatedAt ON entity TYPE datetime DEFAULT time::now();

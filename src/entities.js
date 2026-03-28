@@ -30,12 +30,19 @@ export async function createEntities(entities) {
         observations: ent.observations || []
       };
 
-      // Generate embedding if not provided
-      // Include entity name in embedding so vector search matches name queries
+      // Generate embedding if not provided.
+      // currentState takes priority over observations for embedding — it's a dense,
+      // up-to-date summary that produces a sharper semantic signal than a full history log.
       let embedding = ent.embedding;
-      if (!embedding && params.observations.length > 0) {
-        const textToEmbed = `${ent.name}\n${params.observations.join(' ')}`;
-        embedding = await generateEmbedding(textToEmbed);
+      if (!embedding) {
+        const textForEmbedding = ent.currentState
+          ? `${ent.name}\n${ent.currentState}`
+          : params.observations.length > 0
+            ? `${ent.name}\n${params.observations.join(' ')}`
+            : null;
+        if (textForEmbedding) {
+          embedding = await generateEmbedding(textForEmbedding);
+        }
       }
 
       let query = `CREATE entity SET
@@ -54,6 +61,12 @@ export async function createEntities(entities) {
       if (ent.metadata && typeof ent.metadata === 'object') {
         query += `, metadata = $metadata`;
         params.metadata = ent.metadata;
+      }
+
+      // v4: Add optional currentState field (used as primary embedding source)
+      if (typeof ent.currentState === 'string') {
+        query += `, currentState = $currentState`;
+        params.currentState = ent.currentState;
       }
 
       await db.query(query, params);
@@ -188,15 +201,20 @@ export async function updateEntity(name, updates) {
     setClauses.push('name = $newName');
     params.newName = updates.name;
   }
+  if (typeof updates.currentState === 'string') {
+    setClauses.push('currentState = $currentState');
+    params.currentState = updates.currentState;
+  }
 
   const [result] = await db.query(
     `UPDATE entity SET ${setClauses.join(', ')} WHERE name = $name`,
     params
   );
 
-  // Regenerate embedding if observations or metadata changed (affects searchability)
+  // Regenerate embedding if anything affecting searchability changed
   if (result && result.length > 0 &&
-      (updates.observations !== undefined || updates.metadata !== undefined)) {
+      (updates.observations !== undefined || updates.metadata !== undefined ||
+       updates.currentState !== undefined)) {
     await regenerateEmbedding(name);
   }
 
