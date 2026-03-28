@@ -1,13 +1,28 @@
 # VyasaGraph
 
-**Embedded knowledge graph + two-layer memory stack for AI agents.**
+Most AI agents are amnesiac by design — every conversation starts from zero. VyasaGraph changes that. It's an embedded knowledge graph that lets your agent remember people, decisions, and relationships, then find them later by *meaning* — not just keywords. No server to run, no infrastructure to maintain. Just drop it in and your agent goes from stateless to genuinely context-aware. **Because memory is what separates a tool from a colleague.**
 
-VyasaGraph gives your agent both short-term and long-term memory:
+---
 
-- **SESSION-STATE** — the RAM layer. Instant access to current-session context. Survives context compaction. Written before every response.
-- **VyasaGraph** — the hard drive layer. Permanent knowledge graph with semantic search, graph relations, and project tracking. Persists across sessions.
+## 🧠 Dual-Layer Memory System
 
-Together they make your agent feel continuous, contextual, and sharp — not amnesiac.
+VyasaGraph gives your agent two layers of memory working together:
+
+**1. RAM Layer (SESSION-STATE)**
+- Holds *hot, in-flight context*: what's happening right now, decisions made this session, things to remember before the next compaction
+- Survives context window resets (compaction) because it's a file, not just tokens
+- Think of it as a *write-ahead log* — the agent writes to it continuously so nothing is lost mid-session
+
+**2. Hard Drive Layer (VyasaGraph)**
+- An *embedded SurrealDB database* (no server needed — it's a local file)
+- Stores *permanent knowledge*: entities, relations between them, past decisions, errors, project state
+- Query it with natural language and it finds all relevant memories — full native semantic search
+
+VyasaGraph does this all automatically. No need to tell it to do anything memory-related.
+
+---
+
+VyasaGraph gives your AI agent a persistent, queryable memory — entities, relationships, and vector search — with no external server required. Built on [SurrealDB](https://surrealdb.com/) with RocksDB storage and OpenAI embeddings.
 
 ---
 
