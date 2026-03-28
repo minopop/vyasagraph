@@ -1,19 +1,23 @@
 # VyasaGraph
 
-Most AI agents are amnesiac by design — every conversation starts from zero. VyasaGraph changes that. It's an embedded knowledge graph that lets your agent remember people, decisions, and relationships, then find them later by *meaning* — not just keywords. No server to run, no infrastructure to maintain. Just drop it in and your agent goes from stateless to genuinely context-aware. **Because memory is what separates a tool from a colleague.**
+Most AI agents are amnesiac by design — every conversation starts from zero. VyasaGraph changes that. It's an embedded knowledge graph that lets your agent remember people, decisions, and relationships, then find them later by *meaning* — not just keywords. No server to run, no infrastructure to maintain. Just drop it in and your agent goes from stateless to genuinely context-aware.
+
+**Because memory is what separates a tool from a colleague.**
+
+**VyasaGraph = No more Agentic Amnesia**
 
 ---
 
 ## 🧠 Dual-Layer Memory System
 
-VyasaGraph gives your agent two layers of memory working together:
+**What gives VyasaGraph superpowers?**
 
-**1. RAM Layer (SESSION-STATE)**
+**1. SHORT TERM MEMORY** — RAM layer. Instant access to current-session context. Survives context compaction. Written before every response.
 - Holds *hot, in-flight context*: what's happening right now, decisions made this session, things to remember before the next compaction
 - Survives context window resets (compaction) because it's a file, not just tokens
 - Think of it as a *write-ahead log* — the agent writes to it continuously so nothing is lost mid-session
 
-**2. Hard Drive Layer (VyasaGraph)**
+**2. LONG TERM MEMORY** — Hard drive layer. Permanent knowledge graph with semantic search, graph relations, and project tracking. Persists across sessions.
 - An *embedded SurrealDB database* (no server needed — it's a local file)
 - Stores *permanent knowledge*: entities, relations between them, past decisions, errors, project state
 - Query it with natural language and it finds all relevant memories — full native semantic search
