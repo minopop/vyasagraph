@@ -1,0 +1,35 @@
+{
+  "name": "vyasagraph",
+  "version": "3.0.0",
+  "description": "Embedded knowledge graph + two-layer memory stack for AI agents. Long-term (VyasaGraph) + short-term (SESSION-STATE) memory in one package.",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node tests/test-basic.js && node tests/test-vector.js",
+    "test:basic": "node tests/test-basic.js",
+    "test:vector": "node tests/test-vector.js"
+  },
+  "dependencies": {
+    "surrealdb": "^2.0.1",
+    "@surrealdb/node": "^3.0.2",
+    "openai": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "knowledge-graph",
+    "agent-memory",
+    "vector-search",
+    "surrealdb",
+    "ai-memory",
+    "semantic-search",
+    "embedded-database"
+  ],
+  "author": "OpenClaw",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/minopop/vyasagraph"
+  }
+}
