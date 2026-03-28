@@ -1,5 +1,7 @@
 # VyasaGraph
 
+**🇶🇦 Proudly built in Qatar 🇶🇦**
+
 Most AI agents are amnesiac by design — every conversation starts from zero. VyasaGraph changes that. It's an embedded knowledge graph that lets your agent remember people, decisions, and relationships, then find them later by *meaning* — not just keywords. No server to run, no infrastructure to maintain. Just drop it in and your agent goes from stateless to genuinely context-aware.
 
 **Because memory is what separates a tool from a colleague.**
